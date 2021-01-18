@@ -20,6 +20,7 @@
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "reselect": "^4.0.0"
   }
 }

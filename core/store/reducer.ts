@@ -8,8 +8,7 @@ const rootReducer = (state = initialRootState, action: ApplicationActions) => {
 
   switch (type) {
     case ActionTypes.INIT_APPLICATION: {
-      console.log('Action go though reducer');
-      return state;
+      return { ...state, client: action.payload.client };
     }
     default: {
       return state;
