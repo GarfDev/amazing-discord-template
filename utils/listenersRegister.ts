@@ -11,7 +11,7 @@ function listenersRegister(client: Client, listenersPath: string) {
   });
 
   fileNames.forEach((name, index) => {
-    client.once(name, eventHandlers[index]);
+    client.on(name, eventHandlers[index]);
   });
 }
 

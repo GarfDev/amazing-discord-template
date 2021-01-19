@@ -3,7 +3,7 @@ import { ApplicationRootState } from './types';
 
 export const rootSelector = (state: ApplicationRootState) => state;
 
-export const clientSelector = createSelector(
+export const metadataSelector = createSelector(
   rootSelector,
-  state => state.client
+  state => state.meta
 );

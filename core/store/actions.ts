@@ -1,6 +1,8 @@
-import { Client } from 'discord.js';
+import { Message } from 'discord.js';
 import { action } from 'typesafe-actions';
 import ActionTypes from './actionTypes';
 
-export const initApplication = (client: Client) =>
-  action(ActionTypes.INIT_APPLICATION, { client });
+export const initApplication = () => action(ActionTypes.INIT_APPLICATION);
+
+export const runCommand = (message: Message) =>
+  action(ActionTypes.RUN_COMMAND, { message });
