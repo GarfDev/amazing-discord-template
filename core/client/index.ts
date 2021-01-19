@@ -7,3 +7,4 @@ function createClient() {
 }
 
 export default createClient();
+export { default as sendMessage } from './sendMessage';
