@@ -3,16 +3,18 @@ import { sendMessage } from 'core/client';
 import { runCommand } from './actions';
 import ActionType from './actionTypes';
 // Import commands
+import { Commands } from 'types';
 import { fromRootPath, getCommands, getLogger } from 'utils';
 import { getCommand } from 'utils/messages';
 import commandHandler from 'core/commandHandler';
 
 function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
+  const start = yield new Date().getTime();
   const { message } = payload;
   const logger = getLogger();
 
   const commandPath = yield fromRootPath('commands');
-  const commands = yield getCommands(commandPath);
+  const commands: Commands = yield getCommands(commandPath);
 
   // Process command
   let splicedCommand = yield message.content.split(' ');
@@ -24,7 +26,6 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const commandToRun = yield commands[command];
   if (!commandToRun) return;
 
-  const start = yield new Date().getTime();
   const result = yield call(
     commandHandler,
     commandToRun,
@@ -34,6 +35,7 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
 
   // Return response to channel
   if (result) yield call(sendMessage, message.channel.id, result);
+  // Monitor execution time for commands
   const elapsed = yield new Date().getTime() - start;
   logger.info(`${command} - ${elapsed}ms`);
 }
