@@ -1,15 +1,16 @@
 {
   "name": "best-discord-bot-template-ever",
+  "author": "Nguyen Gia Tuan <GarfDev>",
+  "email": "nguyengiatuan3110@gmail.com",
   "version": "0.0.1",
   "description": "A high quality discord bot template",
   "scripts": {
-    "tsc": "tsc",
+    "tsc": "echo 'This project cannot be compile to js.' ",
     "test": "jest --detectOpenHandles",
     "dev": "nodemon",
     "start": "ts-node -r tsconfig-paths/register app.ts"
   },
   "main": "app.ts",
-  "author": "Nguyen Gia Tuan <nguyengiatuan3110@gmail.com>",
   "license": "MIT",
   "private": true,
   "devDependencies": {
