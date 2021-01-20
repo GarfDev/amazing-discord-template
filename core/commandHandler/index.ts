@@ -1,13 +1,17 @@
 import { Message } from 'discord.js';
 import { CommandListener } from 'types';
+import { getLogger } from 'utils';
 
-const commandHandler = (
+const commandHandler = async (
   command: CommandListener,
   message: Message,
   ...args: string[]
-) =>
-  command(message, ...args)
+) => {
+  const logger = getLogger();
+
+  return command(message, ...args)
     .then(result => result)
-    .catch(() => 'Error while..');
+    .catch(error => logger.error(error));
+};
 
 export default commandHandler;
