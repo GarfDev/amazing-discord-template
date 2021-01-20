@@ -17,13 +17,13 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const commands: Commands = yield getCommands(commandPath);
 
   // Process command
-  let splicedCommand = yield message.content.split(' ');
-  const command = yield getCommand(splicedCommand[0]);
+  let splicedCommand = message.content.split(' ');
+  const command = getCommand(splicedCommand[0]);
   if (!command) return;
-  splicedCommand = yield splicedCommand.splice(1);
+  splicedCommand = splicedCommand.splice(1);
 
   // Run command
-  const commandToRun = yield commands[command];
+  const commandToRun = commands[command];
   if (!commandToRun) return;
 
   const result = yield call(
