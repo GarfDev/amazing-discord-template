@@ -72,7 +72,8 @@
       "core/*": ["./core/*"],
       "utils/*": ["./utils/*"],
       "@actions": ["./core/store/actions.ts"],
-      "@hooks": ["./hooks"]
+      "@hooks": ["./hooks"],
+      "constants/*": ["./constants"]
     }
   },
   "include": ["**/*.ts"],

@@ -1,7 +1,7 @@
-import { CommandListener } from 'types';
+import { CommandHandler } from 'types';
 
 interface Commands {
-  [key: string]: CommandListener;
+  [key: string]: CommandHandler;
 }
 
 export default Commands;

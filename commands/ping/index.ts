@@ -1,7 +1,8 @@
-import { CommandListener } from 'types';
+import { CommandHandler } from 'types';
+import { listenerGenerator } from 'utils/command';
 import createEmbed from 'utils/embed';
 
-const ping: CommandListener = async (message, ...args) => {
+const ping: CommandHandler = async (message, params) => {
   const timeStart = message.createdAt.getTime();
   const elapsed = Math.abs(new Date().getTime() - timeStart);
 
@@ -10,4 +11,6 @@ const ping: CommandListener = async (message, ...args) => {
   });
 };
 
-export default ping;
+export default listenerGenerator({
+  handler: ping
+});

@@ -6,7 +6,6 @@ import ActionType from './actionTypes';
 import { Commands } from 'types';
 import { fromRootPath, getCommands, getLogger } from 'utils';
 import { getCommand } from 'utils/messages';
-import commandHandler from 'core/commandHandler';
 
 function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const start = yield new Date().getTime();
@@ -26,12 +25,7 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const commandToRun = commands[command];
   if (!commandToRun) return;
 
-  const result = yield call(
-    commandHandler,
-    commandToRun,
-    message,
-    ...splicedCommand
-  );
+  const result = yield call(commandToRun, message, splicedCommand);
 
   // Return response to channel
   if (result) yield call(sendMessage, message.channel.id, result);

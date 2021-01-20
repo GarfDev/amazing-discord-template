@@ -1,8 +1,14 @@
-import { Message, MessageEmbed } from 'discord.js';
+import Yup from 'yup';
+import { CommandHandler } from 'types';
+import { UserFlagsString } from 'discord.js';
 
-type CommandListener = (
-  message: Message,
-  ...args: string[]
-) => Promise<string | MessageEmbed>;
+export interface CommandListenerProps {
+  handler: CommandHandler;
+  validationSchema?: Yup.AnySchema;
+  requiredPermissions?: UserFlagsString[];
+  helpMessage?: string;
+}
+
+type CommandListener = (options: CommandListenerProps) => CommandHandler;
 
 export default CommandListener;

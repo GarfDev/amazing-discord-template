@@ -16,7 +16,8 @@ module.exports = {
     '^core/(.*?)$': '<rootDir>/core/$1',
     '^utils/(.*?)$': '<rootDir>/utils/$1',
     '^@actions$': '<rootDir>/core/store/actions.ts',
-    '^@hooks/(.*?)$': '<rootDir>/hooks/$1'
+    '^@hooks/(.*?)$': '<rootDir>/hooks/$1',
+    '^constants/(.*?)$': '<rootDir>/constants/$1'
   }
   //
 };
