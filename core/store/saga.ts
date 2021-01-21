@@ -4,16 +4,27 @@ import { initApplicationSuccess, runCommand } from './actions';
 import ActionType from './actionTypes';
 // Import commands
 import { Commands } from 'types';
-import { fromRootPath, getCommands, getLogger } from 'utils';
+import { fromRootPath, getCommands, getLogger, measureElapsed } from 'utils';
 import { getCommand } from 'utils/messages';
 
 function* callInitApplication() {
+  const logger = getLogger();
   // Pre-load commands from commands folder
+  const measure = measureElapsed();
   const commandPath = yield fromRootPath('commands');
   yield getCommands(commandPath);
+  const elapsed = measure();
+
+  logger.info(`Take ${elapsed}ms to load all commands`);
+
   yield put(initApplicationSuccess());
 }
 
+/**
+ *
+ * This saga is run if a message is identified as a valid command.
+ *
+ */
 function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const start = yield new Date().getTime();
   const { message } = payload;

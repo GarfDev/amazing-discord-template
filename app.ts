@@ -1,16 +1,15 @@
-import path from 'path';
-import { listenersRegister } from 'utils';
-import getClient from 'core/client';
-
-// Handle Environment variable
 import dotenv from 'dotenv';
+
+import getClient from 'core/client';
+import { fromRootPath, listenersRegister } from './utils';
+
 dotenv.config();
 
 // Init Discord Client
 const client = getClient();
 
-// Register Listeners
-const listenerPath = path.join(__dirname, 'listeners');
+// Register Event Listeners
+const listenerPath = fromRootPath('listeners');
 listenersRegister(client, listenerPath);
 
 // Login with Environment Token
