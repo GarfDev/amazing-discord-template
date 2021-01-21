@@ -1,11 +1,18 @@
-import { all, call, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery, takeLeading } from 'redux-saga/effects';
 import { sendMessage } from 'core/client';
-import { runCommand } from './actions';
+import { initApplicationSuccess, runCommand } from './actions';
 import ActionType from './actionTypes';
 // Import commands
 import { Commands } from 'types';
 import { fromRootPath, getCommands, getLogger } from 'utils';
 import { getCommand } from 'utils/messages';
+
+function* callInitApplication() {
+  // Pre-load commands from commands folder
+  const commandPath = yield fromRootPath('commands');
+  yield getCommands(commandPath);
+  yield put(initApplicationSuccess());
+}
 
 function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const start = yield new Date().getTime();
@@ -35,7 +42,10 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
 }
 
 function* rootSaga() {
-  yield all([takeEvery(ActionType.RUN_COMMAND, handleCommand)]);
+  yield all([
+    takeLeading(ActionType.INIT_APPLICATION, callInitApplication),
+    takeEvery(ActionType.RUN_COMMAND, handleCommand)
+  ]);
 }
 
 export default rootSaga;

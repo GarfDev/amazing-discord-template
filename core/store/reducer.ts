@@ -1,5 +1,5 @@
 import { ApplicationRootState, ApplicationActions } from './types';
-import ActionTypes from './actionTypes';
+// import ActionTypes from './actionTypes';
 
 const initialRootState: ApplicationRootState = {
   meta: {
@@ -12,9 +12,6 @@ const rootReducer = (state = initialRootState, action: ApplicationActions) => {
   const { type } = action;
 
   switch (type) {
-    case ActionTypes.INIT_APPLICATION: {
-      return state;
-    }
     default: {
       return state;
     }
