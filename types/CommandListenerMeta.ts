@@ -6,7 +6,7 @@ interface CommandListenerMeta {
   /** Command Handler Type. */
   type: ListenerType;
   /** Return message when wrong param input. */
-  helpMessage?: string;
+  helpMessage: string;
 }
 
 export default CommandListenerMeta;

@@ -1,8 +1,15 @@
 enum ListenerType {
-  EVERYONE = 'EVERYONE',
-  ROLES_REQUIRED = 'ROLE_REQUIRED', // Currently this only available if have an database to store server inputted data
-  PERMISSIONS_REQUIRED = 'PERMISSIONS_REQUIRED',
-  DEVELOPER_REQUIRED = 'DEVELOPER_REQUIRED'
+  GENERAL = 'GENERAL',
+  DEVELOPER = 'DEVELOPER',
+  MANAGE = 'MANAGE'
 }
+
+/////////////////////////////
+
+export const ListenerTypeLabel = {
+  [ListenerType.GENERAL]: 'General Commands',
+  [ListenerType.MANAGE]: 'Bot Management Commands',
+  [ListenerType.DEVELOPER]: 'Developer only access Commands'
+};
 
 export default ListenerType;

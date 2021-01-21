@@ -28,17 +28,17 @@ const rootReducer = (state = initialRootState, action: ApplicationActions) => {
       const { name } = meta;
       // New Command Meta Object
       const newCommandMeta: CommandMeta = {
-        ...state.meta.commands[meta.type],
+        ...(state.meta.commands[meta.type] || {}),
         [name]: meta
       };
       // New Command Meta State Object
       const newCommandMetaState: CommandMetaState = {
-        ...state.meta.commands,
+        ...(state.meta.commands || {}),
         [meta.type]: newCommandMeta
       };
       // New Meta State Object
       const metaState: MetaDataState = {
-        ...state.meta,
+        ...(state.meta || {}),
         commands: newCommandMetaState
       };
       // Action return

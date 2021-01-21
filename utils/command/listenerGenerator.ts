@@ -3,8 +3,7 @@ import ListenerType from 'constants/ListenerType';
 import {
   DEFAULT_DEVELOPER_ERROR_MESSAGE,
   DEFAULT_EXECUTION_ERROR_MESSAGE,
-  DEFAULT_PERMISSIONS_ERROR,
-  DEFAULT_HELP_MESSAGE
+  DEFAULT_PERMISSIONS_ERROR
 } from 'constants/messages';
 import { addCommandMeta } from 'core/store/actions';
 import { ownerIdSelector } from 'core/store/selectors';
@@ -37,11 +36,11 @@ const listenerGenerator: CommandListener = ({
 
     if (!paramsValid)
       return failedEmbedGenerator({
-        description: helpMessage || DEFAULT_HELP_MESSAGE
+        description: helpMessage
       });
 
     // Check Developer
-    if (type === ListenerType.DEVELOPER_REQUIRED) {
+    if (type === ListenerType.DEVELOPER) {
       const developerId = useSelector(ownerIdSelector);
       const isDeveloper = developerId === message.author.id;
       if (!isDeveloper)

@@ -9,8 +9,9 @@
   "scripts": {
     "dev": "nodemon",
     "test": "jest --detectOpenHandles",
-    "start": "node ./build/app.js",
+    "start": "node ./dist/app.js",
     "clean": "prettier --config .prettierrc.js '**/*.ts' --write",
+    "build": "ttsc",
     "tsc": "ttsc"
   },
   "main": "app.ts",
