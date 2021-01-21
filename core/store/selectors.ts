@@ -12,3 +12,8 @@ export const ownerIdSelector = createSelector(
   metadataSelector,
   state => state.ownerId
 );
+
+export const commandMetaSelector = createSelector(
+  metadataSelector,
+  state => state.commands
+);

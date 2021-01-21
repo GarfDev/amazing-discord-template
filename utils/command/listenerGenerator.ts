@@ -1,25 +1,32 @@
-import { useSelector } from '@hooks';
+import { useDispatch, useSelector } from '@hooks';
+import ListenerType from 'constants/ListenerType';
 import {
   DEFAULT_DEVELOPER_ERROR_MESSAGE,
   DEFAULT_EXECUTION_ERROR_MESSAGE,
   DEFAULT_PERMISSIONS_ERROR,
   DEFAULT_HELP_MESSAGE
 } from 'constants/messages';
-import { metadataSelector } from 'core/store/selectors';
+import { addCommandMeta } from 'core/store/actions';
+import { ownerIdSelector } from 'core/store/selectors';
 import { PermissionString } from 'discord.js';
 import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
 import { getLogger } from '..';
 
 const listenerGenerator: CommandListener = ({
+  name,
+  type,
   handler,
   validationSchema,
-  isDeveloperCommand = false,
   helpMessage,
   requiredPermissions = []
 }) => {
-  // Closure
-
+  // This will make sure vars inside this anon
+  // function is clearable by Garbage collector
+  (function () {
+    const dispatch = useDispatch();
+    dispatch(addCommandMeta({ name, type, helpMessage }));
+  })();
   // Inner scope
   return async (message, params) => {
     // Check Params
@@ -34,8 +41,8 @@ const listenerGenerator: CommandListener = ({
       });
 
     // Check Developer
-    if (isDeveloperCommand) {
-      const developerId = useSelector(metadataSelector).ownerId;
+    if (type === ListenerType.DEVELOPER_REQUIRED) {
+      const developerId = useSelector(ownerIdSelector);
       const isDeveloper = developerId === message.author.id;
       if (!isDeveloper)
         return failedEmbedGenerator({

@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { action } from 'typesafe-actions';
+import { CommandListenerMeta } from 'types';
 import ActionTypes from './actionTypes';
 
 export const initApplication = () => action(ActionTypes.INIT_APPLICATION);
@@ -9,3 +10,6 @@ export const initApplicationSuccess = () =>
 
 export const runCommand = (message: Message) =>
   action(ActionTypes.RUN_COMMAND, { message });
+
+export const addCommandMeta = (meta: CommandListenerMeta) =>
+  action(ActionTypes.ADD_COMMAND_META, { meta });

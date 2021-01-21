@@ -26,6 +26,7 @@ function* callInitApplication() {
  *
  */
 function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
+  /////////////////////////////
   const start = yield new Date().getTime();
   const { message } = payload;
   const logger = getLogger();
@@ -33,13 +34,13 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   const commandPath = yield fromRootPath('commands');
   const commands: Commands = yield getCommands(commandPath);
 
-  // Process command
+  // Process command /////////
   let splicedCommand = message.content.split(' ');
   const command = getCommand(splicedCommand[0]);
   if (!command) return;
   splicedCommand = splicedCommand.splice(1);
 
-  // Run command
+  // Run command ////////////
   const commandToRun = commands[command];
   if (!commandToRun) return;
 
@@ -50,6 +51,7 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   // Monitor execution time for commands
   const elapsed = yield new Date().getTime() - start;
   logger.info(`${command} - ${elapsed}ms`);
+  /////////////////////////////
 }
 
 function* rootSaga() {

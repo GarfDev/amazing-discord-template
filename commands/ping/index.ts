@@ -1,3 +1,4 @@
+import ListenerType from 'constants/ListenerType';
 import { CommandHandler } from 'types';
 import { listenerGenerator } from 'utils/command';
 import { successEmbedGenerator } from 'utils/embed';
@@ -12,6 +13,7 @@ const ping: CommandHandler = async message => {
 };
 
 export default listenerGenerator({
-  handler: ping,
-  isDeveloperCommand: true
+  name: 'ping',
+  type: ListenerType.DEVELOPER_REQUIRED,
+  handler: ping
 });

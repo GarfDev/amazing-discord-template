@@ -1,9 +1,12 @@
 import store from 'core/store';
 
-const createStoreSelector = <T, K extends keyof T>(state: T) => (
-  selector: (store: T) => T[K]
-) => {
-  return selector(state);
-};
+type SelectFn = <TState, TSelected>(
+  selector: (state: TState) => TSelected,
+  equalityFn?: (left: TSelected, right: TSelected) => boolean
+) => TSelected;
+
+const createStoreSelector: <TState>(
+  state: TState
+) => SelectFn = state => selector => selector(state as any);
 
 export default createStoreSelector(store.getState());
