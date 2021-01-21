@@ -1,11 +1,11 @@
 import Yup from 'yup';
 import { CommandHandler } from 'types';
-import { UserFlagsString } from 'discord.js';
+import PermissionFlag from 'constants/PermissionFlag';
 
 export interface CommandListenerProps {
   handler: CommandHandler;
   validationSchema?: Yup.AnySchema;
-  requiredPermissions?: UserFlagsString[];
+  requiredPermissions?: PermissionFlag[];
   helpMessage?: string;
 }
 
