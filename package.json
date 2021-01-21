@@ -5,10 +5,11 @@
   "version": "0.0.1",
   "description": "A high quality discord bot template",
   "scripts": {
-    "tsc": "echo 'This project cannot be compile to js.' ",
-    "test": "jest --detectOpenHandles",
     "dev": "nodemon",
-    "start": "ts-node -r tsconfig-paths/register app.ts"
+    "test": "jest --detectOpenHandles",
+    "start": "ts-node -r tsconfig-paths/register app.ts",
+    "clean": "prettier --config .prettierrc.js '**/*.ts' --write",
+    "tsc": "echo 'Should not compile this project to JS.' "
   },
   "main": "app.ts",
   "license": "MIT",
@@ -20,6 +21,7 @@
     "jest": "^26.6.3",
     "module-alias": "^2.2.2",
     "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",

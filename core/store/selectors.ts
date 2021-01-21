@@ -7,3 +7,8 @@ export const metadataSelector = createSelector(
   rootSelector,
   state => state.meta
 );
+
+export const ownerIdSelector = createSelector(
+  metadataSelector,
+  state => state.ownerId
+);

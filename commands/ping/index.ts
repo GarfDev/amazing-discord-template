@@ -1,18 +1,17 @@
 import { CommandHandler } from 'types';
 import { listenerGenerator } from 'utils/command';
-import createEmbed from 'utils/embed';
-import PermissionFlag from 'constants/PermissionFlag';
+import { successEmbedGenerator } from 'utils/embed';
 
-const ping: CommandHandler = async (message, params) => {
+const ping: CommandHandler = async message => {
   const timeStart = message.createdAt.getTime();
   const elapsed = Math.abs(new Date().getTime() - timeStart);
 
-  return createEmbed({
+  return successEmbedGenerator({
     description: `Pong! [${elapsed}ms]`
   });
 };
 
 export default listenerGenerator({
   handler: ping,
-  requiredPermissions: [PermissionFlag.ADD_REACTIONS]
+  isDeveloperCommand: true
 });

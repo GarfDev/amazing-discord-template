@@ -1,8 +1,11 @@
+import { useSelector } from '@hooks';
 import {
+  DEFAULT_DEVELOPER_ERROR_MESSAGE,
   DEFAULT_EXECUTION_ERROR_MESSAGE,
-  DEFAULT_HELP_MESSAGE,
-  DEFAULT_PERMISSIONS_ERROR
+  DEFAULT_PERMISSIONS_ERROR,
+  DEFAULT_HELP_MESSAGE
 } from 'constants/messages';
+import { metadataSelector } from 'core/store/selectors';
 import { PermissionString } from 'discord.js';
 import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
@@ -11,6 +14,7 @@ import { getLogger } from '..';
 const listenerGenerator: CommandListener = ({
   handler,
   validationSchema,
+  isDeveloperCommand = false,
   helpMessage,
   requiredPermissions = []
 }) => {
@@ -28,6 +32,16 @@ const listenerGenerator: CommandListener = ({
       return failedEmbedGenerator({
         description: helpMessage || DEFAULT_HELP_MESSAGE
       });
+
+    // Check Developer
+    if (isDeveloperCommand) {
+      const developerId = useSelector(metadataSelector).ownerId;
+      const isDeveloper = developerId === message.author.id;
+      if (!isDeveloper)
+        return failedEmbedGenerator({
+          description: DEFAULT_DEVELOPER_ERROR_MESSAGE
+        });
+    }
 
     // Check Permissions
     const userFlags = message.guild?.member(message.author)?.permissions;
