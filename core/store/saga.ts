@@ -13,9 +13,10 @@ function* callInitApplication() {
   const measure = measureElapsed();
   const commandPath = yield fromRootPath('commands');
   yield getCommands(commandPath);
+  logger.info(`Preloaded commands`);
   const elapsed = measure();
 
-  logger.info(`Take ${elapsed}ms to load all commands`);
+  logger.info(`Take ${elapsed}ms to initialize application`);
 
   yield put(initApplicationSuccess());
 }
