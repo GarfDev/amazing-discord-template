@@ -7,8 +7,6 @@ const ping: CommandHandler = async message => {
   const timeStart = message.createdAt.getTime();
   const elapsed = Math.abs(new Date().getTime() - timeStart);
 
-  throw Error('Haha');
-
   return successEmbedGenerator({
     description: `Pong! [${elapsed}ms]`
   });

@@ -1,4 +1,11 @@
-import { all, call, put, takeEvery, takeLeading } from 'redux-saga/effects';
+import {
+  all,
+  call,
+  spawn,
+  put,
+  takeEvery,
+  takeLeading
+} from 'redux-saga/effects';
 import { sendMessage } from 'core/client';
 import { initApplicationSuccess, runCommand } from './actions';
 import ActionType from './actionTypes';
@@ -55,11 +62,13 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
   /////////////////////////////
 }
 
+function* commandSaga() {
+  yield takeEvery(ActionType.RUN_COMMAND, handleCommand);
+}
+
 function* rootSaga() {
-  yield all([
-    takeLeading(ActionType.INIT_APPLICATION, callInitApplication),
-    takeEvery(ActionType.RUN_COMMAND, handleCommand)
-  ]);
+  yield spawn(commandSaga);
+  yield all([takeLeading(ActionType.INIT_APPLICATION, callInitApplication)]);
 }
 
 export default rootSaga;
