@@ -5,7 +5,7 @@ type SelectFn = <TState, TSelected>(
   equalityFn?: (left: TSelected, right: TSelected) => boolean
 ) => TSelected;
 
-const createStoreSelector: <TState>() => SelectFn = () => selector =>
+const createStoreSelector: () => SelectFn = () => selector =>
   selector(store.getState() as any);
 
 export default createStoreSelector();

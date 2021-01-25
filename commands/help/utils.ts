@@ -6,12 +6,6 @@ export const getCommandMetaByType = (type: ListenerType) => (
   commandMeta: CommandMetaState
 ) => commandMeta[type] || {};
 
-export const getGeneralCommands = getCommandMetaByType(ListenerType.GENERAL);
-export const getDeveloperCommands = getCommandMetaByType(
-  ListenerType.DEVELOPER
-);
-export const getManagerCommands = getCommandMetaByType(ListenerType.MANAGE);
-
 export const addCommandsToEmbed = (
   embed: MessageEmbed,
   type: ListenerType,

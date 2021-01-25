@@ -2,7 +2,7 @@ import path from 'path';
 import { Client } from 'discord.js';
 import { getFileNames, getModules, readDir } from 'utils';
 
-function listenersRegister(client: Client, listenersPath: string) {
+function listenersRegister(client: Client, listenersPath: string): void {
   const fileList = readDir(listenersPath);
   const fileNames = getFileNames(fileList);
   const eventHandlers = readDir(listenersPath).map(file => {

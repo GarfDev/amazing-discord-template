@@ -15,7 +15,10 @@ const initialRootState: ApplicationRootState = {
   }
 };
 
-const rootReducer = (state = initialRootState, action: ApplicationActions) => {
+const rootReducer = (
+  state = initialRootState,
+  action: ApplicationActions
+): ApplicationRootState => {
   switch (action.type) {
     /**
      * This action register command meta

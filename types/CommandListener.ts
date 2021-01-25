@@ -12,6 +12,10 @@ export interface CommandListenerProps extends CommandListenerMeta {
   requiredPermissions?: PermissionFlag[];
   /** Required roles for member in a guide to use this command. */
   requiredRoles?: PermissionFlag[];
+  /** Is this command only useable in a guild */
+  guildRequired?: boolean;
+  /** Is this command only useable in a DM */
+  dmRequired?: boolean;
 }
 
 type CommandListener = (options: CommandListenerProps) => CommandHandler;

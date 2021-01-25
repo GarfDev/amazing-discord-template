@@ -7,9 +7,9 @@ enum ListenerType {
 /////////////////////////////
 
 export const ListenerTypeLabel = {
-  [ListenerType.GENERAL]: 'General Commands',
+  [ListenerType.DEVELOPER]: 'Developer only access Commands',
   [ListenerType.MANAGE]: 'Bot Management Commands',
-  [ListenerType.DEVELOPER]: 'Developer only access Commands'
+  [ListenerType.GENERAL]: 'General Commands'
 };
 
 export default ListenerType;

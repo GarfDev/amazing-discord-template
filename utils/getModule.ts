@@ -1,4 +1,4 @@
-const getModule = (file: string) => {
+const getModule = (file: string): any => {
   return require(file);
 };
 

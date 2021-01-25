@@ -1,7 +1,7 @@
-function measureElapsed() {
+function measureElapsed(): () => number {
   const start = new Date().getTime();
 
-  return () => {
+  return (): number => {
     const elapsed = new Date().getTime() - start;
     return elapsed;
   };

@@ -5,8 +5,10 @@ interface CommandListenerMeta {
   name: string;
   /** Command Handler Type. */
   type: ListenerType;
-  /** Return message when wrong param input. */
+  /** Return message for help command */
   helpMessage: string;
+  /** Return message when wrong param input. */
+  usageMessage: string;
 }
 
 export default CommandListenerMeta;

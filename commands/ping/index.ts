@@ -7,6 +7,8 @@ const ping: CommandHandler = async message => {
   const timeStart = message.createdAt.getTime();
   const elapsed = Math.abs(new Date().getTime() - timeStart);
 
+  throw Error('Haha');
+
   return successEmbedGenerator({
     description: `Pong! [${elapsed}ms]`
   });
@@ -16,5 +18,6 @@ export default listenerGenerator({
   name: 'ping',
   handler: ping,
   type: ListenerType.DEVELOPER,
-  helpMessage: 'This command return a pong when you call it (Developer only)'
+  helpMessage: 'This command return a pong when you call it (Developer only)',
+  usageMessage: 'This command return a pong when you call it (Developer only)'
 });
