@@ -19,8 +19,7 @@
   },
   "lint-staged": {
     "**/*.ts": [
-      "yarn lint",
-      "git add"
+      "yarn lint"
     ]
   },
   "husky": {
