@@ -27,9 +27,7 @@ If you have any suggestion, request of error, please kindly create an issues on 
 
 - **Global State Management**: with help of [Redux](https://redux.js.org/) (and some handmade hook), we now have only 1 source of trust, help every function invoke now sync with other.
 
-- **Easier to handle Side-effects**: Async/Await and Promise is good, but is hard to keep our codebase clear (and a little bit flat) if we need to handle bunch of callback. With help of
-  [Redux-saga](https://redux-saga.js.org/), It easier to handle Side-Effect of an Side-effect of an Side-effect, save us some times while construct complex application logic and maintain
-  code readability at the same time.
+- **Easier to handle Side-effects**: Async/Await and Promise is good, but is hard to keep our codebase clear (and a little bit flat) if we need to handle bunch of callback. With help of [Redux-saga](https://redux-saga.js.org/), It easier to multitasking-achieved, save us some times while construct complex application logic and maintain code readability at the same time.
 
 - **Typesafe**: It Typesafe.
 
