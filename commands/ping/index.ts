@@ -14,6 +14,7 @@ const ping: CommandHandler = async message => {
 
 export default listenerGenerator({
   name: 'ping',
+  cooldown: 10,
   handler: ping,
   type: ListenerType.DEVELOPER,
   helpMessage: 'This command return a pong when you call it (Developer only)',

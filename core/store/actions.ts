@@ -13,3 +13,9 @@ export const runCommand = (message: Message) =>
 
 export const addCommandMeta = (meta: CommandListenerMeta) =>
   action(ActionTypes.ADD_COMMAND_META, { meta });
+
+export const addCooldown = (
+  userId: string,
+  command: string,
+  lastCommandTime: number
+) => action(ActionTypes.ADD_COOLDOWN, { userId, command, lastCommandTime });

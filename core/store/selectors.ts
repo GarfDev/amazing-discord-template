@@ -17,3 +17,11 @@ export const commandMetaSelector = createSelector(
   metadataSelector,
   state => state.commands
 );
+
+export const cooldownSelector = createSelector(
+  rootSelector,
+  state => state.cooldown
+);
+
+export const selectCooldownById = (userId: string) =>
+  createSelector(cooldownSelector, state => state[userId]);

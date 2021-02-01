@@ -8,6 +8,7 @@ import {
 } from './types';
 
 const initialRootState: ApplicationRootState = {
+  cooldown: {},
   meta: {
     commands: {},
     defaultPrefix: process.env.DEFAULT_PREFIX || '',
@@ -48,6 +49,22 @@ const rootReducer = (
       return {
         ...state,
         meta: metaState
+      };
+    }
+    //
+    // COOLDOWN CASES
+    //
+    case ActionTypes.ADD_COOLDOWN: {
+      const { userId, lastCommandTime, command } = action.payload;
+
+      return {
+        ...state,
+        cooldown: {
+          ...state.cooldown,
+          [userId]: {
+            [command]: lastCommandTime
+          }
+        }
       };
     }
     //

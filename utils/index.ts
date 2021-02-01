@@ -1,3 +1,4 @@
+export { default as inLast } from './inLast';
 export { default as getCommands } from './getCommands';
 export { default as listenersRegister } from './listenersRegister';
 export { default as measureElapsed } from './measureElapsed';

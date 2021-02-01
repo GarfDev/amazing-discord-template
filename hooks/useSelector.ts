@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import store from 'core/store';
 
 type SelectFn = <TState, TSelected>(
@@ -6,6 +7,6 @@ type SelectFn = <TState, TSelected>(
 ) => TSelected;
 
 const createStoreSelector: () => SelectFn = () => selector =>
-  selector(store.getState() as any);
+  selector(_.cloneDeep(store.getState()) as any);
 
 export default createStoreSelector();

@@ -7,11 +7,12 @@ import {
   DEFAULT_GUILD_REQUIRED_MESSAGE,
   DEFAULT_PERMISSIONS_ERROR
 } from 'constants/messages';
-import { addCommandMeta } from 'core/store/actions';
-import { ownerIdSelector } from 'core/store/selectors';
+import { addCommandMeta, addCooldown } from 'core/store/actions';
+import { ownerIdSelector, selectCooldownById } from 'core/store/selectors';
 import { PermissionString } from 'discord.js';
 import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
+import inLast from 'utils/inLast';
 import { getLogger } from '..';
 
 const listenerGenerator: CommandListener = ({
@@ -23,7 +24,8 @@ const listenerGenerator: CommandListener = ({
   validationSchema,
   requiredPermissions = [],
   guildRequired = false,
-  dmRequired = false
+  dmRequired = false,
+  cooldown = 0
 }) => {
   // This will make sure vars inside this anon
   // function is clearable by Garbage collector
@@ -96,9 +98,29 @@ const listenerGenerator: CommandListener = ({
       });
     }
 
+    // Return timeout if command
+    // is used recently.
+    const cooldownChecker = inLast(cooldown);
+    const userCooldown = useSelector(selectCooldownById(message.author.id));
+    const lastTimeCommandUsed = userCooldown?.[name];
+    if (lastTimeCommandUsed && !cooldownChecker(lastTimeCommandUsed)) {
+      //////////////////////
+      const timeRemain = (
+        cooldown -
+        (message.createdTimestamp - lastTimeCommandUsed) / 1000
+      ).toFixed(2);
+      //////////////////////
+      return failedEmbedGenerator({
+        description: `You need **${timeRemain}s** before can use this command again.`
+      });
+    }
+
     // Main return
     try {
-      return await handler(message, params);
+      const dispatch = useDispatch();
+      const result = await handler(message, params);
+      dispatch(addCooldown(message.author.id, name, new Date().getTime()));
+      return result;
     } catch (error) {
       const logger = getLogger();
       logger.error(error.message);

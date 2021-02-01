@@ -8,6 +8,14 @@ export interface CommandMeta {
   [key: string]: CommandListenerMeta;
 }
 
+export interface UserCooldownState {
+  [command: string]: number;
+}
+
+export interface CooldownState {
+  [userId: string]: UserCooldownState;
+}
+
 export interface CommandMetaState {
   [key: string]: CommandMeta;
 }
@@ -20,4 +28,5 @@ export interface MetaDataState {
 
 export interface ApplicationRootState {
   meta: MetaDataState;
+  cooldown: CooldownState;
 }

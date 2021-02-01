@@ -74,8 +74,6 @@ const commandListenerRegister = () => {
             currentDepth = currentDepth[item] as any;
             currentDepth.default = module;
           });
-
-          // spitedCommandPaths.reverse().reduce((res, key) => ({ [key as string]: res }), {});
         });
         initialized = true;
         cachedCommandObj = commandObj;
