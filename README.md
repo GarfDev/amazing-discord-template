@@ -13,7 +13,7 @@
 
 A Discord bot boilerplate that aim to typesafe, stable and functional.
 
-If you have any suggestion, request of error, please kindly create an issues on [react-firebase github repository](https://github.com/GarfDev/best-discord-bot-typescript-template-ever).
+If you have any suggestion, request of error, please kindly create an issues on [here](https://github.com/GarfDev/best-discord-bot-typescript-template-ever).
 
 ## Table of Contents
 
