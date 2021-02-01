@@ -90,6 +90,15 @@ const listenerGenerator: CommandListener = ({
         });
     }
 
+    // Quick return usageMessage if
+    // there no command handler
+
+    if (!handler) {
+      return failedEmbedGenerator({
+        description: usageMessage
+      });
+    }
+
     // Main return
     try {
       return await handler(message, params);

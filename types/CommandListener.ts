@@ -5,7 +5,7 @@ import CommandListenerMeta from './CommandListenerMeta';
 
 export interface CommandListenerProps extends CommandListenerMeta {
   /** Command Handler if pass all checks. */
-  handler: CommandHandler;
+  handler?: CommandHandler;
   /** An schema that check input params is correct or not. */
   validationSchema?: Yup.AnySchema;
   /** Required permission for member in a guide to use this command. */

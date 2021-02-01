@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import getClient from 'core/client';
 import { fromRootPath, listenersRegister } from './utils';
 
-const main = () => {
+export const main = () => {
   dotenv.config();
 
   // Init Discord Client

@@ -1,27 +1,28 @@
 import {
   all,
   call,
-  spawn,
   put,
   takeLeading,
   actionChannel,
-  take
+  take,
+  spawn
 } from 'redux-saga/effects';
 import { sendMessage } from 'core/client';
-import { initApplicationSuccess, runCommand } from './actions';
-import ActionType from './actionTypes';
+import { initApplicationSuccess } from './actions';
+import ActionTypes from './actionTypes';
 // Import commands
 import { Commands } from 'types';
-import { fromRootPath, getCommands, getLogger, measureElapsed } from 'utils';
-import { getCommand } from 'utils/messages';
+import { getLogger, measureElapsed } from 'utils';
+import { getCommand, getPrefix } from 'utils/messages';
+import { commandListenerRegister } from 'utils/command';
+import { Message } from 'discord.js';
 
 function* callInitApplication() {
   const logger = getLogger();
   // Pre-load commands from commands folder
   const measure = measureElapsed();
-  const commandPath = yield fromRootPath('commands');
-  yield getCommands(commandPath);
   logger.info(`Preloaded commands`);
+  yield commandListenerRegister();
   const elapsed = measure();
 
   logger.info(`Take ${elapsed}ms to initialize application`);
@@ -29,51 +30,77 @@ function* callInitApplication() {
   yield put(initApplicationSuccess());
 }
 
+function commandObjTraveler(
+  commands: Commands,
+  params: string[]
+): [Commands, string[]] {
+  let currentDepth = commands;
+  const progressedParams = [...params];
+
+  for (let i = 0; i <= params.length; i++) {
+    let param = params[i];
+    // Handle first param include  //
+    // Application prefix          //
+    if (i === 0) {
+      param = param.replace(getPrefix(), '');
+    }
+    // Return if cannot find current param
+    // In object. And use remain as function param
+    // later
+    if (!currentDepth[param]) {
+      break;
+    }
+
+    currentDepth = currentDepth[param] as any;
+    progressedParams.shift();
+  }
+
+  return [currentDepth, progressedParams];
+}
+
 /**
  *
  * This saga is run if a message is identified as a valid command.
  *
  */
-function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
-  /////////////////////////////
-  const start = yield new Date().getTime();
-  const { message } = payload;
-  const logger = getLogger();
 
-  const commandPath = yield fromRootPath('commands');
-  const commands: Commands = yield getCommands(commandPath);
+function* handleCommand(message: Message) {
+  ////////////////////////////
+  const start = yield new Date().getTime();
+  const logger = getLogger();
+  const commands: Commands = yield commandListenerRegister();
 
   // Process command /////////
-  let splicedCommand = message.content.split(' ');
+  const splicedCommand = message.content.split(' ');
   const command = getCommand(splicedCommand[0]);
-  if (!command) return;
-  splicedCommand = splicedCommand.splice(1);
+  if (!command.length) return;
+  const [commandToRun, params] = commandObjTraveler(commands, splicedCommand);
 
-  // Run command ////////////
-  const commandToRun = commands[command];
+  // Run command /////////////
   if (!commandToRun) return;
+  if (commandToRun.default && commandToRun.default instanceof Function) {
+    const result = yield call(commandToRun.default, message, params);
 
-  const result = yield call(commandToRun, message, splicedCommand);
-
-  // Return response to channel
-  if (result) yield call(sendMessage, message.channel.id, result);
-  // Monitor execution time for commands
-  const elapsed = yield new Date().getTime() - start;
-  logger.info(`${command} - ${elapsed}ms`);
-  /////////////////////////////
+    // Return response to channel
+    if (result) yield call(sendMessage, message.channel.id, result);
+    // Monitor execution time for commands
+    const elapsed = yield new Date().getTime() - start;
+    logger.info(`${command} - ${elapsed}ms`);
+    //////////////////////////
+  }
 }
 
 function* commandSaga() {
-  const channel = yield actionChannel(ActionType.RUN_COMMAND);
+  const channel = yield actionChannel(ActionTypes.RUN_COMMAND);
   while (true) {
     const { payload } = yield take(channel);
-    yield handleCommand(payload);
+    yield handleCommand(payload.message);
   }
 }
 
 function* rootSaga() {
   yield spawn(commandSaga);
-  yield all([takeLeading(ActionType.INIT_APPLICATION, callInitApplication)]);
+  yield all([takeLeading(ActionTypes.INIT_APPLICATION, callInitApplication)]);
 }
 
 export default rootSaga;
