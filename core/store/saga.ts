@@ -4,7 +4,6 @@ import {
   spawn,
   put,
   takeLeading,
-  takeEvery,
   actionChannel,
   take
 } from 'redux-saga/effects';
