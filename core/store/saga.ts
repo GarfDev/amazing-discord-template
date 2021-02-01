@@ -3,8 +3,10 @@ import {
   call,
   spawn,
   put,
+  takeLeading,
   takeEvery,
-  takeLeading
+  actionChannel,
+  take
 } from 'redux-saga/effects';
 import { sendMessage } from 'core/client';
 import { initApplicationSuccess, runCommand } from './actions';
@@ -63,7 +65,11 @@ function* handleCommand({ payload }: ReturnType<typeof runCommand>) {
 }
 
 function* commandSaga() {
-  yield takeEvery(ActionType.RUN_COMMAND, handleCommand);
+  const channel = yield actionChannel(ActionType.RUN_COMMAND);
+  while (true) {
+    const { payload } = yield take(channel);
+    yield handleCommand(payload);
+  }
 }
 
 function* rootSaga() {
