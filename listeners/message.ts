@@ -9,6 +9,10 @@ async function onMessage(message: Message): Promise<void> {
   const isFromSelf = checkFromSelf(message.author.id);
   if (isFromSelf) return;
 
+  // Return if is a bot message
+  const isFromBot = message.author.bot;
+  if (isFromBot) return;
+
   // Check if this is a command
   const isCommand = checkMessage(message.content);
   if (!isCommand) return;
