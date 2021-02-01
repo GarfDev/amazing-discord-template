@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import getClient from 'core/client';
 import { fromRootPath, listenersRegister } from './utils';
 
-export const main = () => {
+const application = () => {
   dotenv.config();
 
   // Init Discord Client
@@ -16,5 +16,4 @@ export const main = () => {
   client.login(process.env.TOKEN);
 };
 
-// Run application
-main();
+export default application;

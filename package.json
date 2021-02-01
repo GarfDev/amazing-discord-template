@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "start": "yarn build && node ./dist/app.js",
+    "start": "yarn build && node ./dist/index.js",
     "test": "jest --detectOpenHandles",
     "clean": "prettier --config .prettierrc.js '**/*.ts' --write",
     "lint": "eslint . --fix --ignore-path .gitignore",

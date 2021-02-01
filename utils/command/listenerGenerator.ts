@@ -71,10 +71,8 @@ const listenerGenerator: CommandListener = ({
     }
 
     // Check Permissions
-    // @ Bypass permission required if is Developer
     // @ Bypass permission required if is DM
-    const isRequiredFlags =
-      requiredPermissions.length > 0 && !isDeveloperRequired && !dmRequired;
+    const isRequiredFlags = requiredPermissions.length > 0 && !dmRequired;
 
     if (isRequiredFlags) {
       const userFlags = message.guild?.members.cache.get(message.author.id)
@@ -90,9 +88,8 @@ const listenerGenerator: CommandListener = ({
         });
     }
 
-    // Quick return usageMessage if
+    // Quick return usageMessage or
     // there no command handler
-
     if (!handler) {
       return failedEmbedGenerator({
         description: usageMessage
