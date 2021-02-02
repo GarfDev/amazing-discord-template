@@ -6,8 +6,6 @@ import CommandListenerMeta from './CommandListenerMeta';
 export interface CommandListenerProps extends CommandListenerMeta {
   /** Command Handler if pass all checks. */
   handler?: CommandHandler;
-  /** Time that user need to wait before can re-use this command */
-  cooldown?: number;
   /** An schema that check input params is correct or not. */
   validationSchema?: Yup.AnySchema;
   /** Required permission for member in a guide to use this command. */

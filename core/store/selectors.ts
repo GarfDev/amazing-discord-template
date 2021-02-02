@@ -18,6 +18,9 @@ export const commandMetaSelector = createSelector(
   state => state.commands
 );
 
+export const selectCommandByName = (commandName: string) =>
+  createSelector(commandMetaSelector, state => state[commandName]);
+
 export const cooldownSelector = createSelector(
   rootSelector,
   state => state.cooldown

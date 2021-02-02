@@ -4,10 +4,6 @@ import * as actions from './actions';
 
 export type ApplicationActions = ActionType<typeof actions>;
 
-export interface CommandMeta {
-  [key: string]: CommandListenerMeta;
-}
-
 export interface UserCooldownState {
   [command: string]: number;
 }
@@ -17,7 +13,7 @@ export interface CooldownState {
 }
 
 export interface CommandMetaState {
-  [key: string]: CommandMeta;
+  [key: string]: CommandListenerMeta;
 }
 
 export interface MetaDataState {

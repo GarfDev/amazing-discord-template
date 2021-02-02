@@ -9,6 +9,10 @@ interface CommandListenerMeta {
   helpMessage: string;
   /** Return message when wrong param input. */
   usageMessage: string;
+  /** Time that user need to wait before can re-use this command */
+  cooldown?: number;
+  /** Should run this command in a queue or not */
+  queued?: boolean;
 }
 
 export default CommandListenerMeta;

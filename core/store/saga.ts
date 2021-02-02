@@ -3,19 +3,26 @@ import {
   call,
   put,
   takeLeading,
+  takeEvery,
   actionChannel,
   take,
   spawn
 } from 'redux-saga/effects';
 import { sendMessage } from 'core/client';
-import { initApplicationSuccess } from './actions';
+import {
+  initApplicationSuccess,
+  processAsyncCommand,
+  processQueuedCommand,
+  verifyCommand as verifyCommandAction
+} from './actions';
 import ActionTypes from './actionTypes';
 // Import commands
 import { Commands } from 'types';
 import { getLogger, measureElapsed } from 'utils';
 import { getCommand, getPrefix } from 'utils/messages';
 import { commandListenerRegister } from 'utils/command';
-import { Message } from 'discord.js';
+import { useDispatch, useSelector } from '@hooks';
+import { selectCommandByName } from './selectors';
 
 function* callInitApplication() {
   const logger = getLogger();
@@ -64,10 +71,9 @@ function commandObjTraveler(
  *
  */
 
-function* handleCommand(message: Message) {
+function* verifyCommand({ payload }: ReturnType<typeof verifyCommandAction>) {
+  const { message } = payload;
   ////////////////////////////
-  const start = yield new Date().getTime();
-  const logger = getLogger();
   const commands: Commands = yield commandListenerRegister();
 
   // Process command /////////
@@ -75,32 +81,58 @@ function* handleCommand(message: Message) {
   const command = getCommand(splicedCommand[0]);
   if (!command.length) return;
   const [commandToRun, params] = commandObjTraveler(commands, splicedCommand);
+  const commandMeta = useSelector(selectCommandByName(command));
 
   // Run command /////////////
-  if (!commandToRun) return;
+  if (!commandToRun && !commandMeta.name) return;
   if (commandToRun.default && commandToRun.default instanceof Function) {
-    const result = yield call(commandToRun.default, message, params);
-
-    // Return response to channel
-    if (result) yield call(sendMessage, message.channel.id, result);
-    // Monitor execution time for commands
-    const elapsed = yield new Date().getTime() - start;
-    logger.info(`${command} - ${elapsed}ms`);
-    //////////////////////////
+    const dispatch = useDispatch();
+    if (commandMeta.queued) {
+      dispatch(
+        processQueuedCommand(command, commandToRun.default, message, params)
+      );
+    } else {
+      dispatch(
+        processAsyncCommand(command, commandToRun.default, message, params)
+      );
+    }
   }
 }
 
-function* commandSaga() {
-  const channel = yield actionChannel(ActionTypes.RUN_COMMAND);
+function* commandRunner({ payload }: ReturnType<typeof processQueuedCommand>) {
+  const { name, commandHandler, message, params } = payload;
+
+  const logger = getLogger();
+  const start = yield new Date().getTime();
+  const result = yield call(commandHandler, message, params);
+
+  // Return response to channel
+  if (result) yield call(sendMessage, message.channel.id, result);
+  // Monitor execution time for commands
+  const elapsed = yield new Date().getTime() - start;
+  logger.info(`${name} - ${elapsed}ms`);
+}
+
+function* queuedCommandSaga() {
+  const channel = yield actionChannel(ActionTypes.RUN_QUEUED_COMMAND);
   while (true) {
-    const { payload } = yield take(channel);
-    yield handleCommand(payload.message);
+    const action = yield take(channel);
+    yield commandRunner(action);
   }
+}
+
+function* asyncCommandSaga() {
+  yield all([takeEvery(ActionTypes.RUN_ASYNC_COMMAND, commandRunner)]);
 }
 
 function* rootSaga() {
-  yield spawn(commandSaga);
-  yield all([takeLeading(ActionTypes.INIT_APPLICATION, callInitApplication)]);
+  yield all([
+    takeEvery(ActionTypes.VERIFY_COMMAND, verifyCommand),
+    takeLeading(ActionTypes.INIT_APPLICATION, callInitApplication)
+  ]);
+  // Spawn Command Handlers
+  yield spawn(asyncCommandSaga);
+  yield spawn(queuedCommandSaga);
 }
 
 export default rootSaga;

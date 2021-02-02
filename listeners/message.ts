@@ -1,4 +1,4 @@
-import { runCommand } from '@actions';
+import { verifyCommand } from '@actions';
 import { useDispatch } from '@hooks';
 import { Message } from 'discord.js';
 import { checkFromSelf, checkMessage } from '../utils/messages';
@@ -18,7 +18,7 @@ async function onMessage(message: Message): Promise<void> {
   if (!isCommand) return;
 
   // Dispatch command
-  dispatch(runCommand(message));
+  dispatch(verifyCommand(message));
 }
 
 export default onMessage;

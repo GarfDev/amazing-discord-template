@@ -2,7 +2,6 @@ import ActionTypes from './actionTypes';
 import {
   ApplicationRootState,
   ApplicationActions,
-  CommandMeta,
   CommandMetaState,
   MetaDataState
 } from './types';
@@ -30,15 +29,10 @@ const rootReducer = (
       // Destructor Params
       const { meta } = action.payload;
       const { name } = meta;
-      // New Command Meta Object
-      const newCommandMeta: CommandMeta = {
-        ...(state.meta.commands[meta.type] || {}),
-        [name]: meta
-      };
       // New Command Meta State Object
       const newCommandMetaState: CommandMetaState = {
         ...(state.meta.commands || {}),
-        [meta.type]: newCommandMeta
+        [name]: meta
       };
       // New Meta State Object
       const metaState: MetaDataState = {
