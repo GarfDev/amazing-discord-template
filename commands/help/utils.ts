@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { MessageEmbed } from 'discord.js';
 import ListenerType, { ListenerTypeLabel } from 'constants/ListenerType';
 import { CommandMetaState } from 'core/store/types';
