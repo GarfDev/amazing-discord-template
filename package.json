@@ -4,7 +4,7 @@
   "author": "Nguyen Gia Tuan <GarfDev>",
   "email": "nguyengiatuan3110@gmail.com",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A high quality discord bot template",
   "license": "MIT",
   "scripts": {
@@ -58,9 +58,11 @@
     "typescript-transform-paths": "^2.2.2"
   },
   "dependencies": {
+    "caller-path": "^3.0.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "glob": "^7.1.6",
+    "immer": "^8.0.1",
     "moment": "^2.29.1",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",

@@ -8,14 +8,14 @@ const ping: CommandHandler = async message => {
   const elapsed = Math.abs(new Date().getTime() - timeStart);
 
   return successEmbedGenerator({
-    description: `Pong! [${elapsed}ms]`
+    description: `Pong! \`${elapsed}ms\``
   });
 };
 
 export default listenerGenerator({
   name: 'ping',
   cooldown: 10,
-  queued: true,
+  queued: false,
   handler: ping,
   type: ListenerType.DEVELOPER,
   helpMessage: 'This command return a pong when you call it (Developer only)',

@@ -13,7 +13,15 @@ import { PermissionString } from 'discord.js';
 import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
 import inLast from 'utils/inLast';
-import { getLogger } from '..';
+import { fromRootPath, getLogger } from '..';
+
+const getCurrentLocation = () => {
+  const e = new Error();
+  const regex = /\((.*):(\d+):(\d+)\)$/;
+  if (!e.stack) return '';
+  const match = regex.exec(e.stack.split('\n')[4]);
+  return match?.[1] || '';
+};
 
 const listenerGenerator: CommandListener = ({
   name,
@@ -30,8 +38,21 @@ const listenerGenerator: CommandListener = ({
   // This will make sure vars inside this anon
   // function is clearable by Garbage collector
   (function () {
+    let parent = undefined;
+    const commandDepthArray = getCurrentLocation()
+      .replace(fromRootPath('commands'), '')
+      .replace('/index.ts', '')
+      .slice(1, getCurrentLocation().length)
+      ?.split('/');
+    if (commandDepthArray?.length > 1) {
+      parent =
+        commandDepthArray[
+          commandDepthArray.findIndex(item => item === name) - 1
+        ];
+    }
+
     const dispatch = useDispatch();
-    dispatch(addCommandMeta({ name, type, helpMessage, usageMessage }));
+    dispatch(addCommandMeta({ parent, name, type, helpMessage, usageMessage }));
   })();
   // Inner scope
   return async (message, params) => {

@@ -1,10 +1,12 @@
 import ListenerType from 'constants/ListenerType';
 
 interface CommandListenerMeta {
+  /** Parent of this command. */
+  parent?: string;
   /** Command Name. */
   name: string;
   /** Command Handler Type. */
-  type: ListenerType;
+  type?: ListenerType;
   /** Return message for help command */
   helpMessage: string;
   /** Return message when wrong param input. */

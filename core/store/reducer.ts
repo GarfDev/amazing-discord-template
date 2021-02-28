@@ -1,10 +1,6 @@
+import { produce } from 'immer';
 import ActionTypes from './actionTypes';
-import {
-  ApplicationRootState,
-  ApplicationActions,
-  CommandMetaState,
-  MetaDataState
-} from './types';
+import { ApplicationRootState, ApplicationActions } from './types';
 
 const initialRootState: ApplicationRootState = {
   cooldown: {},
@@ -30,20 +26,11 @@ const rootReducer = (
       const { meta } = action.payload;
       const { name } = meta;
       // New Command Meta State Object
-      const newCommandMetaState: CommandMetaState = {
-        ...(state.meta.commands || {}),
-        [name]: meta
-      };
-      // New Meta State Object
-      const metaState: MetaDataState = {
-        ...(state.meta || {}),
-        commands: newCommandMetaState
-      };
       // Action return
-      return {
-        ...state,
-        meta: metaState
-      };
+
+      return produce(state, nextState => {
+        nextState.meta.commands[name] = meta;
+      });
     }
     //
     // COOLDOWN CASES
@@ -51,15 +38,11 @@ const rootReducer = (
     case ActionTypes.ADD_COOLDOWN: {
       const { userId, lastCommandTime, command } = action.payload;
 
-      return {
-        ...state,
-        cooldown: {
-          ...state.cooldown,
-          [userId]: {
-            [command]: lastCommandTime
-          }
-        }
-      };
+      return produce(state, nextState => {
+        nextState.cooldown[userId] = {
+          [command]: lastCommandTime
+        };
+      });
     }
     //
     default: {

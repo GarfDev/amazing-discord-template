@@ -12,7 +12,7 @@ const help: CommandHandler = async message => {
   let returnEmbed = embedGenerator({});
 
   // Values mapped from props
-  const listenrerTypeObject = { ...ListenerType };
+  const listenerTypeObject = { ...ListenerType };
 
   // Settings up embed
   returnEmbed.setColor(Colors.DARK_BLUE);
@@ -21,7 +21,7 @@ const help: CommandHandler = async message => {
 
   // Add Commands to embed
 
-  Object.keys(listenrerTypeObject).forEach(type => {
+  Object.keys(listenerTypeObject).forEach(type => {
     const commands = getCommandMetaByType(type as ListenerType)(commandMeta);
     returnEmbed = addCommandsToEmbed(
       returnEmbed,
