@@ -54,18 +54,17 @@ const commandListenerRegister = () => {
         const spitedCommandPaths = commandPaths.map(path => path.split('/'));
 
         // Register Paths to an Object
-
         spitedCommandPaths.forEach(pathArray => {
           let currentDepth = commandObj;
 
-          pathArray.forEach(item => {
-            if (!currentDepth[item]) {
+          pathArray.reduce((pre, item) => {
+            if (currentDepth[item] === undefined) {
               currentDepth[item] = {};
             }
 
             const filePath = path.join(
               fromRootPath(commandFolder),
-              ...pathArray
+              ...[...pre, item]
             );
             const module: CommandHandler = getModules(filePath).default;
 
@@ -73,7 +72,8 @@ const commandListenerRegister = () => {
 
             currentDepth = currentDepth[item] as any;
             currentDepth.default = module;
-          });
+            return [...pre, item];
+          }, [] as string[]);
         });
         initialized = true;
         cachedCommandObj = commandObj;
