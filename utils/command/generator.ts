@@ -13,7 +13,7 @@ import { PermissionString } from 'discord.js';
 import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
 import inLast from 'utils/inLast';
-import { fromRootPath, getLogger } from '..';
+import { getStaticPath, getLogger } from '..';
 
 const getCurrentLocation = () => {
   const e = new Error();
@@ -40,7 +40,7 @@ const listenerGenerator: CommandListener = ({
   (function () {
     let parent = undefined;
     const commandDepthArray = getCurrentLocation()
-      .replace(fromRootPath('commands'), '')
+      .replace(getStaticPath('commands'), '')
       .replace('/index.ts', '')
       .slice(1, getCurrentLocation().length)
       ?.split('/');

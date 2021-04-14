@@ -2,7 +2,7 @@ import path from 'path';
 import glob from 'glob';
 import { compose } from 'redux';
 import { CommandHandler, Commands } from 'types';
-import { fromRootPath, getModules } from '..';
+import { getStaticPath, getModules } from '..';
 import { CommandListenerNotFound } from 'errors';
 
 /**
@@ -63,7 +63,7 @@ const commandListenerRegister = () => {
             }
 
             const filePath = path.join(
-              fromRootPath(commandFolder),
+              getStaticPath(commandFolder),
               ...[...pre, item]
             );
             const module: CommandHandler = getModules(filePath).default;

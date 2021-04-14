@@ -1,6 +1,6 @@
 import path from 'path';
 
-const fromRootPath = (continuePath: string): string =>
+const getStaticPath = (continuePath: string): string =>
   path.join(require.main?.filename || '', '..', continuePath);
 
-export default fromRootPath;
+export default getStaticPath;
