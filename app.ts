@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import getClient from 'core/client';
 import { getStaticPath, listenersRegister } from './utils';
+import 'module-alias/register';
 
 const application = () => {
   dotenv.config();

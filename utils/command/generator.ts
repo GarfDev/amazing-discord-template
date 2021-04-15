@@ -83,32 +83,34 @@ const listenerGenerator: CommandListener = ({
       });
 
     // Check Developer
+    // Bypass all other permission requirements
+    // If this instance run on development enviroment
     const isDeveloperRequired = type === ListenerType.DEVELOPER;
-    if (isDeveloperRequired) {
+    if (isDeveloperRequired && process.env.NODE_ENV !== 'production') {
       const developerId = useSelector(ownerIdSelector);
       const isDeveloper = developerId === message.author.id;
       if (!isDeveloper)
         return failedEmbedGenerator({
           description: DEFAULT_DEVELOPER_ERROR_MESSAGE
         });
-    }
+    } else {
+      // Check Permissions
+      // @ Bypass permission required if is DM
+      const isRequiredFlags = requiredPermissions.length > 0 && !dmRequired;
 
-    // Check Permissions
-    // @ Bypass permission required if is DM
-    const isRequiredFlags = requiredPermissions.length > 0 && !dmRequired;
-
-    if (isRequiredFlags) {
-      const userFlags = message.guild?.members.cache.get(message.author.id)
-        ?.permissions;
-      const validPermissions = isRequiredFlags
-        ? !!(requiredPermissions as PermissionString[]).filter(requiredFlag =>
-            userFlags?.toArray().find(userFlag => requiredFlag === userFlag)
-          ).length
-        : true;
-      if (!validPermissions)
-        return failedEmbedGenerator({
-          description: DEFAULT_PERMISSIONS_ERROR
-        });
+      if (isRequiredFlags) {
+        const userFlags = message.guild?.members.cache.get(message.author.id)
+          ?.permissions;
+        const validPermissions = isRequiredFlags
+          ? !!(requiredPermissions as PermissionString[]).filter(requiredFlag =>
+              userFlags?.toArray().find(userFlag => requiredFlag === userFlag)
+            ).length
+          : true;
+        if (!validPermissions)
+          return failedEmbedGenerator({
+            description: DEFAULT_PERMISSIONS_ERROR
+          });
+      }
     }
 
     // Quick return usageMessage or
