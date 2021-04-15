@@ -2,7 +2,7 @@
   "parserOptions": {
     "ecmaVersion": 9,
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": false
     },
     "sourceType": "module"
   },
