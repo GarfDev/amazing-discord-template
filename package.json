@@ -23,7 +23,8 @@
   },
   "lint-staged": {
     "**/*.ts": [
-      "yarn lint"
+      "yarn lint",
+      "yarn test"
     ]
   },
   "husky": {
