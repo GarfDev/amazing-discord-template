@@ -20,7 +20,7 @@ import { Commands } from 'types';
 import { getCommand } from 'utils/messages';
 import { getLogger, measureElapsed } from 'utils';
 import { commandListenerRegister, commandObjTraveler } from 'utils/command';
-import { useDispatch, useSelector } from '@hooks';
+import { useDispatch, useSelector } from 'utils/hooks';
 import { selectCommandByName } from './selectors';
 
 function* callInitApplication() {

@@ -1,5 +1,5 @@
 import { verifyCommand } from '@actions';
-import { useDispatch } from '@hooks';
+import { useDispatch } from 'utils/hooks';
 import { Message } from 'discord.js';
 import { checkFromSelf, checkMessage } from '../utils/messages';
 

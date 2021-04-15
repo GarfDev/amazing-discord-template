@@ -23,7 +23,7 @@ module.exports = {
     '^@hooks/(.*?)$': '<rootDir>/hooks/$1',
     '@hooks': '<rootDir>/hooks',
     '^constants/(.*?)$': '<rootDir>/constants/$1',
-    errors: '<rootDir>/errors'
+    errors: '<rootDir>/utils/errors'
   }
   //
 };

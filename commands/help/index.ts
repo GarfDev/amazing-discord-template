@@ -1,4 +1,4 @@
-import { useSelector } from '@hooks';
+import { useSelector } from 'utils/hooks';
 import { CommandHandler } from 'types';
 import embedGenerator from 'utils/embed';
 import { listenerGenerator } from 'utils/command';

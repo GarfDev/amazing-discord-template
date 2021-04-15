@@ -3,7 +3,7 @@ import glob from 'glob';
 import { compose } from 'redux';
 import { CommandHandler, Commands } from 'types';
 import { getStaticPath, getModules } from '..';
-import { CommandListenerNotFound } from 'errors';
+import { CommandListenerNotFound } from 'utils/errors';
 
 /**
  *

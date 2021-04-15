@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from '@hooks';
+import { useDispatch, useSelector } from 'utils/hooks';
 import ListenerType from 'constants/ListenerType';
 import {
   DEFAULT_DEVELOPER_ERROR_MESSAGE,

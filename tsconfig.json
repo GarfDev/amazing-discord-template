@@ -78,7 +78,7 @@
       "core/*": ["./core/*"],
       "utils/*": ["./utils/*"],
       "@actions": ["./core/store/actions.ts"],
-      "@hooks": ["./hooks"],
+      "@hooks": ["utils/hooks"],
       "constants/*": ["./constants/*"]
     },
     /* Plugins config */

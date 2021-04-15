@@ -1,4 +1,4 @@
-import { useDispatch } from '@hooks';
+import { useDispatch } from 'utils/hooks';
 import { initApplication } from 'core/store/actions';
 
 async function onReady(): Promise<void> {
