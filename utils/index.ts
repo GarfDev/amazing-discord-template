@@ -5,5 +5,6 @@ export { default as measureElapsed } from './measureElapsed';
 export { default as getFileNames } from './getFileNames';
 export { default as getStaticPath } from './getStaticPath';
 export { default as getModules } from './getModule';
-export { default as getLogger } from './getLogger';
 export { default as readDir } from './readDir';
+/////////////////////////////////////////////////
+export * from './logger';
