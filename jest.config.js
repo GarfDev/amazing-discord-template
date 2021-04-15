@@ -10,6 +10,7 @@ module.exports = {
   transform: {
     '^.+\\.[tj]s$': 'ts-jest'
   },
+  modulePathIgnorePatterns: ['dist'],
   transformIgnorePatterns: ['<rootDir>/node_modules/(?!@foo)'],
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   moduleDirectories: ['node_modules'],
@@ -17,9 +18,12 @@ module.exports = {
   moduleNameMapper: {
     '^core/(.*?)$': '<rootDir>/core/$1',
     '^utils/(.*?)$': '<rootDir>/utils/$1',
-    '^@actions$': '<rootDir>/core/store/actions.ts',
+    '^utils': '<rootDir>/utils',
+    '@actions': '<rootDir>/core/store/actions.ts',
     '^@hooks/(.*?)$': '<rootDir>/hooks/$1',
-    '^constants/(.*?)$': '<rootDir>/constants/$1'
+    '@hooks': '<rootDir>/hooks',
+    '^constants/(.*?)$': '<rootDir>/constants/$1',
+    errors: '<rootDir>/errors'
   }
   //
 };

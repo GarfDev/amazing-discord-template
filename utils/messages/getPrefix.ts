@@ -1,5 +1,5 @@
 import { metadataSelector } from 'core/store/selectors';
-import { useSelector } from 'hooks';
+import { useSelector } from '@hooks';
 
 const getPrefix = (): string => {
   const metaData = useSelector(metadataSelector);

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import getClient from 'core/client';
-import { fromRootPath, listenersRegister } from './utils';
+import { getStaticPath, listenersRegister } from './utils';
+import 'module-alias/register';
 
 const application = () => {
   dotenv.config();
@@ -9,7 +10,7 @@ const application = () => {
   const client = getClient();
 
   // Register Event Listeners
-  const listenerPath = fromRootPath('listeners');
+  const listenerPath = getStaticPath('listeners');
   listenersRegister(client, listenerPath);
 
   // Login with Environment Token
