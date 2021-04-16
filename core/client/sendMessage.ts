@@ -5,7 +5,7 @@ const createSendMessageToID = (client: Client) => async (
   id: string,
   content: string | MessageEmbed
 ) => {
-  const channel = await client.channels.fetch(id);
+  const channel = client.channels.cache.get(id);
   if (!channel) return;
 
   const isTextChannel = channel.isText();

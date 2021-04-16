@@ -4,7 +4,7 @@ import { Model, Optional, DataTypes } from 'sequelize';
 const sequelize = getDatabase();
 
 interface UserAttributes {
-  id: string;
+  id?: string;
   uuid: string;
   public_address: string;
   private_address: string;
@@ -16,11 +16,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> {}
 
 User.init(
   {
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      allowNull: false
-    },
     uuid: {
       type: DataTypes.STRING,
       allowNull: false
