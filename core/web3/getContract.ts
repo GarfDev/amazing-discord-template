@@ -6,7 +6,10 @@ const contractStoreInitializer = () => {
   const web3 = getWeb3();
   const contract = new web3.eth.Contract(
     Metacoin.abi as any,
-    process.env.CONTRACT_ADDRESS
+    process.env.CONTRACT_ADDRESS,
+    {
+      data: Metacoin.bytecode
+    }
   );
 
   return (): Contract => contract;

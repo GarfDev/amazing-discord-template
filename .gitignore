@@ -47,3 +47,9 @@ yarn.lock
 
 # Clinic Metric files
 .clinic
+
+# Others
+artifacts/
+chaindata/
+cache/
+

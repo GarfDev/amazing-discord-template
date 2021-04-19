@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.25 <0.7.0;
 
-import "./ConvertLib.sol";
+import './ConvertLib.sol';
 
 // This is just a simple example of a coin-like contract.
 // It is not standards compatible and cannot be expected to talk to other
@@ -9,27 +9,35 @@ import "./ConvertLib.sol";
 // token, see: https://github.com/ConsenSys/Tokens. Cheers!
 
 contract MetaCoin {
-	mapping (address => uint) balances;
+  mapping(address => uint256) balances;
 
-	event Transfer(address indexed _from, address indexed _to, uint256 _value);
+  event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
-	constructor() public {
-		balances[tx.origin] = 10000;
-	}
+  constructor() public {
+    balances[tx.origin] = 10000;
+  }
 
-	function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
-		if (balances[msg.sender] < amount) return false;
-		balances[msg.sender] -= amount;
-		balances[receiver] += amount;
-		emit Transfer(msg.sender, receiver, amount);
-		return true;
-	}
+  function sendCoin(address receiver, uint256 amount)
+    public
+    returns (bool sufficient)
+  {
+    if (balances[msg.sender] < amount) return false;
+    balances[msg.sender] -= amount;
+    balances[receiver] += amount;
+    emit Transfer(msg.sender, receiver, amount);
+    return true;
+  }
 
-	function getBalanceInEth(address addr) public view returns(uint){
-		return ConvertLib.convert(getBalance(addr),2);
-	}
+  function getBalanceInEth(address addr) public view returns (uint256) {
+    return ConvertLib.convert(getBalance(addr), 2);
+  }
 
-	function getBalance(address addr) public view returns(uint) {
-		return balances[addr];
-	}
+  function claim(address addr) public returns (uint256) {
+    balances[addr] += 10000;
+    return balances[addr];
+  }
+
+  function getBalance(address addr) public view returns (uint256) {
+    return balances[addr];
+  }
 }
