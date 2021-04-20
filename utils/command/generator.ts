@@ -56,9 +56,11 @@ const listenerGenerator: CommandListener = ({
   })();
   // Inner scope
   return async (message, params) => {
+    const isFromCorde = message.author.id === process.env.CORDE_BOT_ID;
+
     // Check if guild required
     if (guildRequired) {
-      if (!message?.guild)
+      if (isFromCorde ? false : !message?.guild)
         return failedEmbedGenerator({
           description: DEFAULT_GUILD_REQUIRED_MESSAGE
         });
@@ -86,7 +88,8 @@ const listenerGenerator: CommandListener = ({
     // Bypass all other permission requirements
     // If this instance run on development enviroment
     const isDeveloperRequired = type === ListenerType.DEVELOPER;
-    if (isDeveloperRequired && process.env.NODE_ENV !== 'production') {
+    const isInProduction = process.env.NODE_ENV !== 'production';
+    if (isFromCorde ? false : isDeveloperRequired && isInProduction) {
       const developerId = useSelector(ownerIdSelector);
       const isDeveloper = developerId === message.author.id;
       if (!isDeveloper)

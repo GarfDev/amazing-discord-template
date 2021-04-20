@@ -10,7 +10,9 @@ async function onMessage(message: Message): Promise<void> {
   if (isFromSelf) return;
 
   // Return if is a bot message
-  const isFromBot = message.author.bot;
+  // Bypass bot check if this is from corde bot
+  const isFromCorde = message.author.id === process.env.CORDE_BOT_ID;
+  const isFromBot = isFromCorde ? false : message.author.bot;
   if (isFromBot) return;
 
   // Check if this is a command
