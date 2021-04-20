@@ -86,6 +86,6 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "test/bot.test.js"],
   "exclude": ["./node_modules/*"]
 }

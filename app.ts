@@ -3,7 +3,7 @@ import getClient from 'core/client';
 import { getStaticPath, listenersRegister } from './utils';
 import 'module-alias/register';
 
-const application = () => {
+const application = async () => {
   dotenv.config();
 
   // Init Discord Client
@@ -14,7 +14,8 @@ const application = () => {
   listenersRegister(client, listenerPath);
 
   // Login with Environment Token
-  client.login(process.env.TOKEN);
+  await client.login(process.env.TOKEN);
+  return client;
 };
 
 export default application;
