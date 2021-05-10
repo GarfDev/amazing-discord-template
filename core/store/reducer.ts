@@ -23,13 +23,22 @@ const rootReducer = (
      */
     case ActionTypes.ADD_COMMAND_META: {
       // Destructor Params
-      const { meta } = action.payload;
+      const { meta, depthArray } = action.payload;
       const { name } = meta;
       // New Command Meta State Object
       // Action return
 
       return produce(state, nextState => {
-        nextState.meta.commands[name] = meta;
+        if (!depthArray.length) {
+          nextState.meta.commands[name] = meta;
+        } else {
+          let currentDepth = nextState.meta.commands[depthArray[0]];
+          depthArray.shift();
+          depthArray.forEach(str => {
+            currentDepth = currentDepth.childs[str];
+          });
+          currentDepth.childs[name] = meta;
+        }
       });
     }
     //

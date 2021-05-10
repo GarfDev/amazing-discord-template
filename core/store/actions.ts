@@ -37,8 +37,10 @@ export const processQueuedCommand = (
     params
   });
 
-export const addCommandMeta = (meta: CommandListenerMeta) =>
-  action(ActionTypes.ADD_COMMAND_META, { meta });
+export const addCommandMeta = (
+  depthArray: string[],
+  meta: CommandListenerMeta
+) => action(ActionTypes.ADD_COMMAND_META, { depthArray, meta });
 
 export const addCooldown = (
   userId: string,

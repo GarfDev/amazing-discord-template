@@ -9,7 +9,7 @@ import {
 } from 'constants/messages';
 import { addCommandMeta, addCooldown } from 'core/store/actions';
 import { ownerIdSelector, selectCooldownById } from 'core/store/selectors';
-import { PermissionString } from 'discord.js';
+import { MessageEmbed, PermissionString } from 'discord.js';
 import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
 import inLast from 'utils/inLast';
@@ -38,21 +38,31 @@ const listenerGenerator: CommandListener = ({
   // This will make sure vars inside this anon
   // function is clearable by Garbage collector
   (function () {
-    let parent = undefined;
     const commandDepthArray = getCurrentLocation()
       .replace(getStaticPath('commands'), '')
       .replace('/index.ts', '')
       .slice(1, getCurrentLocation().length)
       ?.split('/');
     if (commandDepthArray?.length > 1) {
-      parent =
-        commandDepthArray[
-          commandDepthArray.findIndex(item => item === name) - 1
-        ];
+      // parent =
+      //   commandDepthArray[
+      //     commandDepthArray.findIndex(item => item === name) - 1
+      //   ];
     }
 
+    const itemIndex = commandDepthArray.findIndex(item => item === name);
+    const depthArray = commandDepthArray.splice(0, itemIndex);
+
     const dispatch = useDispatch();
-    dispatch(addCommandMeta({ parent, name, type, helpMessage, usageMessage }));
+    dispatch(
+      addCommandMeta(depthArray, {
+        name,
+        type,
+        helpMessage,
+        usageMessage,
+        childs: {}
+      })
+    );
   })();
   // Inner scope
   return async (message, params) => {
@@ -79,10 +89,15 @@ const listenerGenerator: CommandListener = ({
       ? validationSchema?.isValidSync(params)
       : true;
 
-    if (!paramsValid)
-      return failedEmbedGenerator({
-        description: usageMessage
-      });
+    if (!paramsValid) {
+      if (usageMessage instanceof MessageEmbed) {
+        return usageMessage;
+      } else {
+        return failedEmbedGenerator({
+          description: usageMessage
+        });
+      }
+    }
 
     // Check Developer
     // Bypass all other permission requirements
@@ -102,8 +117,9 @@ const listenerGenerator: CommandListener = ({
       const isRequiredFlags = requiredPermissions.length > 0 && !dmRequired;
 
       if (isRequiredFlags) {
-        const userFlags = message.guild?.members.cache.get(message.author.id)
-          ?.permissions;
+        const userFlags = message.guild?.members.cache.get(
+          message.author.id
+        )?.permissions;
         const validPermissions = isRequiredFlags
           ? !!(requiredPermissions as PermissionString[]).filter(requiredFlag =>
               userFlags?.toArray().find(userFlag => requiredFlag === userFlag)
@@ -119,9 +135,13 @@ const listenerGenerator: CommandListener = ({
     // Quick return usageMessage or
     // there no command handler
     if (!handler) {
-      return failedEmbedGenerator({
-        description: usageMessage
-      });
+      if (usageMessage instanceof MessageEmbed) {
+        return usageMessage;
+      } else {
+        return failedEmbedGenerator({
+          description: usageMessage
+        });
+      }
     }
 
     // Return timeout if command
